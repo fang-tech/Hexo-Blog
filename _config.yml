@@ -102,6 +102,6 @@ theme: landscape
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy: 
   type: 'git'
-  repo: 'git@github.com:fang-tech/fang-tech.github.io.git'
+  repo: 'https://github.com/fang-tech/fang-tech.github.io.git'
   url: 'https://functional.top'
   branch: 'master'
