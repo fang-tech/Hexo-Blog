@@ -5,35 +5,22 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 设置 GITHUB_TOKEN 权限
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# 确保只有一个部署任务同时运行
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
+    - name: Checkout Hexo-Blog repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
 
     - name: Cache node modules
       uses: actions/cache@v3
@@ -53,17 +40,23 @@ jobs:
         npx hexo clean
         npx hexo generate
 
-    - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./public
+    - name: Setup Git for deployment
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+    - name: Deploy to fang-tech.github.io
+      run: |
+        cd public
+        git init
+        git add -A
+        git commit -m "Deploy blog - $(date '+%Y-%m-%d %H:%M:%S')"
+        git branch -M main
+        git remote add origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/fang-tech/fang-tech.github.io.git
+        git push -f origin main
 
     - name: Deployment status
       if: success()
       run: |
         echo "✅ Hexo 博客部署成功！"
-        echo "🌐 网站地址: ${{ steps.deployment.outputs.page_url }}"
+        echo "🌐 网站地址: https://fang-tech.github.io"
