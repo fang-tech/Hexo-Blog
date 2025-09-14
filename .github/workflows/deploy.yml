@@ -1,0 +1,59 @@
+name: Deploy Hexo Blog
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # 允许手动触发和其他 workflow 触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Hexo-Blog repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: |
+        npm ci
+        npm install hexo-cli -g
+
+    - name: Setup Git for deployment
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Clean and generate static files
+      run: |
+        npx hexo clean
+        npx hexo generate
+
+    - name: Deploy to GitHub Pages
+      run: |
+        npx hexo deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Deployment status
+      if: success()
+      run: |
+        echo "✅ Hexo 博客部署成功！"
+        echo "🌐 网站地址: https://fang-tech.github.io"
