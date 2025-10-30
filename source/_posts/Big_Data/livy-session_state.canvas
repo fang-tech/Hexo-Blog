@@ -1,0 +1,27 @@
+{
+	"nodes":[
+		{"id":"a6c773cc41dcbd7b","type":"text","text":"NotStarted: 未启动","x":-632,"y":20,"width":250,"height":60},
+		{"id":"2425d9667007f22e","type":"text","text":"Starting: 启动中","x":-632,"y":182,"width":250,"height":50},
+		{"id":"160f3d135153f27a","type":"text","text":"Recovering: 恢复中, 从故障中恢复","x":-375,"y":152,"width":325,"height":60},
+		{"id":"6ae119702b60f603","type":"text","text":"Running: 运行中","x":-632,"y":345,"width":250,"height":60},
+		{"id":"3cf6acc0231fdc8c","type":"text","text":"Idle: 空闲","x":-160,"y":435,"width":250,"height":60},
+		{"id":"0da4ce97be32adee","type":"text","text":"Busy: 忙碌(正在执行任务)","x":-160,"y":375,"width":250,"height":60},
+		{"id":"c8b84db31f36db8a","type":"text","text":"Error: 错误 (可能恢复?)","x":-632,"y":700,"width":250,"height":60},
+		{"id":"6a202673b840bb30","type":"text","text":"ShuttingDown: 关闭中","x":-632,"y":840,"width":250,"height":60},
+		{"id":"1b35ed9621f5236b","type":"text","text":"Dead: 死亡","x":-632,"y":980,"width":250,"height":60},
+		{"id":"a5370a4867899482","type":"text","text":"Killed: 已杀死 (主动终止)","x":-325,"y":980,"width":250,"height":60},
+		{"id":"e72f7c372d94aa00","type":"text","text":"Success: 成功完成 (仅批处理会话)","x":-160,"y":840,"width":250,"height":60}
+	],
+	"edges":[
+		{"id":"1cf1c7f7fd3d4823","fromNode":"a6c773cc41dcbd7b","fromSide":"bottom","toNode":"2425d9667007f22e","toSide":"top","label":"create session"},
+		{"id":"7d4256576dfa2720","fromNode":"2425d9667007f22e","fromSide":"bottom","toNode":"6ae119702b60f603","toSide":"top","label":"RSCClient created SparkApp starting"},
+		{"id":"6ecda6b01cb02977","fromNode":"6ae119702b60f603","fromSide":"bottom","toNode":"c8b84db31f36db8a","toSide":"top","label":"statement error"},
+		{"id":"4af9fdcfded4977e","fromNode":"6ae119702b60f603","fromSide":"bottom","toNode":"3cf6acc0231fdc8c","toSide":"left","label":"idle/busy (REPL状态)"},
+		{"id":"6a3c5db3feefd926","fromNode":"0da4ce97be32adee","fromSide":"top","toNode":"6ae119702b60f603","toSide":"right"},
+		{"id":"2a8c2b78440192df","fromNode":"c8b84db31f36db8a","fromSide":"bottom","toNode":"6a202673b840bb30","toSide":"top"},
+		{"id":"d55cbe3594e5ee10","fromNode":"1b35ed9621f5236b","fromSide":"left","toNode":"2425d9667007f22e","toSide":"left"},
+		{"id":"3cd8cfe455e0cf18","fromNode":"6a202673b840bb30","fromSide":"bottom","toNode":"1b35ed9621f5236b","toSide":"top"},
+		{"id":"966441e9f8662988","fromNode":"6a202673b840bb30","fromSide":"right","toNode":"a5370a4867899482","toSide":"top"},
+		{"id":"1b7e6fae3941e6ea","fromNode":"6ae119702b60f603","fromSide":"bottom","toNode":"e72f7c372d94aa00","toSide":"left"}
+	]
+}

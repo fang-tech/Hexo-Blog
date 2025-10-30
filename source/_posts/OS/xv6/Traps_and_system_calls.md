@@ -4,6 +4,7 @@ tags:
   - Operating-System
   - xv6
   - syscall
+date: 2025-10-29
 ---
 
 # trap
@@ -51,7 +52,7 @@ trap有三种类型
 > kernel/trap.c: usertra
 
 - 校验此刻CPU是不是U-Mode
-- 将kernelvec函数的地址写入到stvec, 用于接下来执行
+- 将kernelvec函数的地址写入到stvec, 接下来执行kernelvec代码(在下一个小部分)
 - 保存用户进程的pc(从sepc读取)
 - 处理不同的异常情况 (读取scause的值)
 	- 8 -> 来自系统调用: 
@@ -62,6 +63,99 @@ trap有三种类型
 - 如果这是个timer中断, 让出cpu
 - prepare_return()
 - 切换到用户页表
+
+> kernel/kernelvec.S
+
+- 声明入口点
+
+```S
+.globl kerneltrap  # 将kerneltrap声明为全局的符号
+.globl kernelvec  # 同样申请成全局符号以供外部调用
+.align 4  # 将代码对齐到16字节边界, 提高性能
+kernelvec:  # kernelvec入口标签, 在usertrap的第二步就会进入到这个入口中执行接下来的汇编代码
+```
+
+- 向下增长栈, 为保存通用寄存器留出空间
+
+```S
+# make room to save registers.
+addi sp, sp, -256  # 栈指针向下移动256字节, 用于保存寄存器(RISC-V有32个通用寄存器=32*8 = 256字节)
+```
+
+- 保存用户态的寄存器
+
+> RISC-V调用约定中, 寄存器分成两类
+> 1. caller-saved registers: 调用函数前, 调用者必须保存这些寄存器
+> 2. callee-saved registers: 被调用函数必须保存和恢复这些寄存器
+> 这里我们只保存了caller-save register的原因是C函数会遵循RISC-V的约定, 保存callee-save register, 所以我们只用保存另一部分
+
+```S
+# save caller-saved registers.
+sd ra, 0(sp)  # return address
+# sd sp, 8(sp)
+sd gp, 16(sp)  # global pointer
+sd tp, 24(sp)  # thread pointer
+sd t0, 32(sp)
+sd t1, 40(sp)
+sd t2, 48(sp)
+sd a0, 72(sp)
+sd a1, 80(sp)
+sd a2, 88(sp)
+sd a3, 96(sp)
+sd a4, 104(sp)
+sd a5, 112(sp)
+sd a6, 120(sp)
+sd a7, 128(sp)
+sd t3, 216(sp)
+sd t4, 224(sp)
+sd t5, 232(sp)
+sd t6, 240(sp)
+```
+
+- 调用kerneltrap C函数
+
+```c
+# call the C trap handler in trap.c
+call kerneltrap
+```
+
+- 恢复caller-saved寄存器
+
+```S
+# restore registers.
+ld ra, 0(sp)
+# ld sp, 8(sp)
+ld gp, 16(sp)
+# not tp (contains hartid), in case we moved CPUs
+ld t0, 32(sp)
+ld t1, 40(sp)
+ld t2, 48(sp)
+ld a0, 72(sp)
+ld a1, 80(sp)
+ld a2, 88(sp)
+ld a3, 96(sp)
+ld a4, 104(sp)
+ld a5, 112(sp)
+ld a6, 120(sp)
+ld a7, 128(sp)
+ld t3, 216(sp)
+ld t4, 224(sp)
+ld t5, 232(sp)
+ld t6, 240(sp)
+```
+
+```S
+addi sp, sp, 256 # 将栈指针移回256字节前
+
+# return to whatever we were doing in the kernel.
+sret
+```
+
+> sret指令: 行为
+> 1. 将PC设置成sepc的值
+> 2. 将特权级别恢复成sstatus.SPP中保存的值
+> 3. 将中断使能恢复成sstatus.SPIE中保存的值
+> 4. 继续执行被中断的代码
 ## 用户态trap处理函数的返回准备函数
 > kernel/trap.c: prepare_return
 
