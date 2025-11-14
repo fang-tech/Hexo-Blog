@@ -7,6 +7,13 @@ tags:
 date: 2025-11-14
 ---
 
+# Git 最佳实践
+使用Git的核心原则是: 
+- 精细地控制自己的行为对于stage/work/local/remote的影响
+- 尽可能拆分commit
+	- local: 每完成一个阶段性的任务就创建一个commit来便于rollback和比对自己的修改
+	- remote: 所有的commit都应该基于main/dev创建, commit之间保持平行关系, 每次push之前fetch
+- 保持主分支的commit线性
 ## pull branch
 显示所有的远程的分支
 
