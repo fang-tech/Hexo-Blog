@@ -7,8 +7,6 @@ tags:
 ---
 # Chapter-1-Overview
 ## 操作系统的目的
-> 这种说法就像宇宙的目的这样感觉浪漫 @fung
-
 > The job of an operating system is to share a computer among multiple programs and to provide a more useful set of services than the hardware alone supports. An operating system manages and abstracts the low-level hardware, so that, for example, a word processor need not concern itself with which type of disk hardware is being used. An operating system shares the hardware among multiple programs so that they run (or appear to run) at the same time. Finally, operating systems provide controlled ways for programs to interact, so that they can share data or work together @xv6 book
 
 操作系统的目的就是

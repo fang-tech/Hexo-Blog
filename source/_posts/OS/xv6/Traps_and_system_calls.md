@@ -6,7 +6,6 @@ tags:
   - syscall
 date: 2025-10-29
 ---
-
 # trap
 trap有三种类型
 - system call
@@ -28,10 +27,12 @@ trap有三种类型
 - 用于系统控制的特殊的寄存器, 不能随便地读写, 需要特殊的指令才能读写
 	- `csrr`: CSR寄存器 read
 	- `csrw`: CSR寄存器 write
-### 寄存
+### 寄存器
 - 系统控制寄存器
 	- **sstatus: Supervisor Status Register**监督者状态
-		- (第9个bit, 1L<< 8)记录异常发生前的CPU的特权级别, 1 = 来自Supervisor, 0 = 来自User
+		- SPP: (bit 8, 1L<< 8) 记录异常发生前的CPU的特权级别, 1 = 来自Supervisor, 0 = 来自User
+		- SIE: (bit 1, 1L<<1) Supervisor 中断使能 (0=关闭, 1=开启)
+		- SPIE: (bit 5, 1L<<5) 陷阱前的中断使能状态
 	- **stvec: Supervisor Trap Vector** 监督者陷阱向量
 		- 指向发生trap的时候, CPU接下来要跳转到函数的地址
 	- **sepc: Supervisor Exception Program Counter** 监督者异常pc
@@ -152,12 +153,36 @@ sret
 ```
 
 > sret指令: 行为
-> 1. 将PC设置成sepc的值
+> 1. 将PC设置成sepc的值 (保存的是发生trap的时候的pc)
 > 2. 将特权级别恢复成sstatus.SPP中保存的值
 > 3. 将中断使能恢复成sstatus.SPIE中保存的值
 > 4. 继续执行被中断的代码
+
+## trap.c/kerneltrap函数
+
 ## 用户态trap处理函数的返回准备函数
 > kernel/trap.c: prepare_return
 
 - intr_off(): 关闭中断
-- 
+
+## 小结: trap的调用链全过程
+## 为什么同时要有kerneltrap和usertrap
+关键点就在于我们同时有在kernel mode中和user mode中处理trap的需求, 而这两个mode执行环境存在不同
+- 页表不同
+	- 最后要使用的都是内核页表
+		- kernel mode -> 不用切换页表
+		- user mode -> 需要将页表切换成内核页表
+- 栈不同
+	- 需要使用内核栈
+		- kernel mode -> 已经使用了内核栈
+		- user mode -> 需要切换到内核栈
+- 保存的上下文不同
+	- kernel mode -> 只需要保存几个关键寄存器 (如pc等), 其他的寄存器由调用约定保护
+	- user mode -> 需要保存完整的user mode的寄存器到 trapframe
+- 返回方式不同
+	- user mode -> 需要切换页表和特区级别
+	- kernel mode -> 直接正常返回即可
+
+> 
+
+trap的类型中的interrupt和exception是我们在执行内核代码的时候也会随时发生的事情(尤其是interrupt, 如时钟中断和设备中断)
