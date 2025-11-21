@@ -6,7 +6,6 @@ tags:
   - Best-Practice
 date: 2025-11-14
 ---
-
 # Git 最佳实践
 使用Git的核心原则是: 
 - 精细地控制自己的行为对于stage/work/local/remote的影响
