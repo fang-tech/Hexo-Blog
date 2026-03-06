@@ -11,17 +11,28 @@
 
 nav:
   # Navigation bar logo image
-  logo:
+  logo: 
   display_title: true
   display_post_title: true
   # Whether to fix navigation bar
   fixed: false
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+  首页: / || fas fa-home
+  项目 || fa-solid fa-folder:
+    分布式架构: /categories/Architecture/Distributed-Systems || fa-solid fa-layer-group
+    AI Agentic System: /categories/Project/AI-Agentic-System/ || fa-solid fa-robot
+    Lottery: /categories/Project/Lottery/ || fa-solid fa-ticket
+  中间件 || fa-solid fa-gear:
+    MySQL: /categories/Middleware/MySQL/ || fa-solid fa-database
+    # Redis: /categories/Middleware/Redis/ || fa-solid fa-memory
+    # MQ:   /categories/Middleware/MQ/ || fa-solid fa-comments
+  语言 || fa-solid fa-laptop-code:
+    Java: /categories/Java/ || fa-brands fa-java
+  计算机基础 || fa-solid fa-cogs:
+    算法: /categories/Computer-Fundamentals/Algorithm || fas fa-route
+    OS: /categories/Computer-Fundamentals/OS || fas fa-desktop
+    计算机网络: /categories/Computer-Fundamentals/Network|| fas fa-network-wired
 
 # --------------------------------------
 # Code Blocks Settings
@@ -30,7 +41,7 @@ menu:
 code_blocks:
   # Code block theme: darker / pale night / light / ocean / false
   theme: light
-  macStyle: false
+  macStyle: true
   # Code block height limit (unit: px)
   height_limit: false
   word_wrap: false
@@ -49,24 +60,25 @@ social:
   # fab fa-github: https://github.com/xxxxx || Github || '#24292e'
   # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
 
+
 # --------------------------------------
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: https://cdn.jsdelivr.net/gh/fang-tech/Pic/img/202507101117002.jpg
 
 avatar:
-  img: /img/butterfly-icon.png
+  img: https://cdn.jsdelivr.net/gh/fang-tech/Pic/img/202507101117002.jpg
   effect: false
 
 # Disable all banner images
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: https://cdn.jsdelivr.net/gh/fang-tech/Pic/img/202507101117129.jpg
 
 # The banner image of index page
-index_img:
+index_img: 
 
 # The banner image of archive page
 archive_img:
@@ -88,11 +100,11 @@ category_img:
 category_per_img:
 
 # The background image of footer
-footer_img: false
+footer_img: true
 
 # Website Background
 # Can set it to color or image url
-background:
+background: 
 
 cover:
   # Disable the cover or not
@@ -148,7 +160,7 @@ index_top_img_height:
 
 # The subtitle on homepage
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
@@ -164,6 +176,10 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
+    - The unexamine life is not worth living
+    - Everything I want wants me more
+    - 走暗路，耕瘦田，进窄门
+    - 太阳可出租, 月亮包退换
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -193,14 +209,14 @@ toc:
   post: true
   page: false
   number: true
-  expand: false
+  expand: true
   # Only for post
   style_simple: false
   scroll_percent: true
 
 post_copyright:
-  enable: true
-  decode: false
+  enable: false
+  decode: true
   author_href:
   license: CC BY-NC-SA 4.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -276,21 +292,21 @@ aside:
   button: true
   mobile: true
   # Position: left / right
-  position: right
+  position: left
   display:
     archive: true
     tag: true
     category: true
   card_author:
-    enable: true
+    enable: false
     description:
     button:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/fang-tech
   card_announcement:
-    enable: true
+    enable: false
     content: This is my Blog
   card_recent_post:
     enable: true
@@ -361,9 +377,9 @@ rightside_bottom:
 
 # Conversion between Traditional and Simplified Chinese
 translate:
-  enable: false
+  enable: true
   # The text of a button
-  default: 繁
+  default: 简
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese）
   defaultEncoding: 2
   # Time delay
@@ -385,13 +401,13 @@ darkmode:
   # autoChangeMode: 1  Following System Settings, if the system doesn't support dark mode, it will switch dark mode between 6 pm to 6 am
   # autoChangeMode: 2  Switch dark mode between 6 pm to 6 am
   # autoChangeMode: false
-  autoChangeMode: false
+  autoChangeMode: 1
   # Set the light mode time. The value is between 0 and 24. If not set, the default value is 6 and 18
   start:
   end:
 
 # Show scroll percent in scroll-to-top button
-rightside_scroll_percent: false
+rightside_scroll_percent: true
 
 # Don't modify the following settings unless you know how they work
 # Choose: readmode,translate,darkmode,hideAside,toc,chat,comment
@@ -427,7 +443,7 @@ copy:
 
 # Need to install the hexo-wordcount plugin
 wordcount:
-  enable: false
+  enable: true
   # Display the word count of the article in post meta
   post_wordcount: true
   # Display the time to read the article in post meta
@@ -472,8 +488,8 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
-  placeholder:
+  use: local_search
+  placeholder: 
 
   # Algolia Search
   algolia_search:
@@ -488,11 +504,6 @@ search:
     top_n_per_article: 1
     # Unescape html strings to the readable one.
     unescape: false
-    # Enable pagination for search results
-    pagination:
-      enable: false
-      # Number of search results per page
-      hitsPerPage: 8
     CDN:
 
   # Docsearch
@@ -531,7 +542,7 @@ comments:
   # Leave it empty if you don't need comments
   # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
   # Format of two comments system : Disqus,Waline
-  use:
+  use: giscus
   # Display the comment name next to the button
   text: true
   # Lazyload: The comment system will be load when comment element enters the browser's viewport.
@@ -564,11 +575,12 @@ livere:
 # Gitalk
 # https://github.com/gitalk/gitalk
 gitalk:
-  client_id:
-  client_secret:
-  repo:
-  owner:
-  admin:
+  client_id: Ov23li4bXLe7MUGkzYiL
+  client_secret: 6e07175d5780251b166904c518448940a5214fb1
+  repo: fang-tech.github.io
+  owner: fang-tech
+  admin: 
+    - fang-tech
   option:
 
 # Valine
@@ -628,13 +640,17 @@ twikoo:
 # Giscus
 # https://giscus.app/
 giscus:
-  repo:
-  repo_id:
-  category_id:
-  light_theme: light
-  dark_theme: dark
-  js:
+  repo: fang-tech/fang-tech.github.io
+  repo_id: R_kgDOPJD8XA
+  category_id: DIC_kwDOPJD8XM4CswtE
+  theme:
+    light: light
+    dark: dark
   option:
+    lang: zh-CN
+    input_position: top
+    emit_metadata: 1
+    reactions_enabled: 1
 
 # Remark42
 # https://remark42.com/docs/configuration/frontend/
@@ -699,7 +715,6 @@ umami_analytics:
   enable: false
   # For self-hosted setups, configure the hostname of the Umami instance
   serverURL:
-  script_name: script.js
   website_id:
   option:
   UV_PV:
@@ -809,11 +824,11 @@ display_mode: light
 beautify:
   enable: true
   # Specify the field to beautify (site or post)
-  field: post
+  field: site
   # Specify the icon to be used as a prefix for the title, such as '\f0c1'
   title_prefix_icon:
   # Specify the color of the title prefix icon, such as '#F47466'
-  title_prefix_icon_color:
+  title_prefix_icon_color: '#F47466'
 
 # Global font settings
 # Don't modify the following settings unless you know how they work
@@ -1039,11 +1054,7 @@ Open_Graph_meta:
 
 # Structured Data
 # https://developers.google.com/search/docs/guides/intro-structured-data
-structured_data:
-  enable: false
-  # Alternate name for the site, used in structured data
-  # Format: ['name1', 'name2']
-  alternate_name:
+structured_data: true
 
 # Add the vendor prefixes to ensure compatibility
 css_prefix: true
@@ -1098,11 +1109,12 @@ CDN:
     # fancybox:
     # fancybox_css:
     # fireworks:
-    # fontawesome:
+    # fontawesome: 
     # gitalk:
     # gitalk_css:
     # giscus:
     # instantpage:
+    # instantsearch:
     # katex:
     # katex_copytex:
     # lazyload:
