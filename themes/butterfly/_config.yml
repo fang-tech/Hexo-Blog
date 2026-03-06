@@ -11,7 +11,7 @@
 
 nav:
   # Navigation bar logo image
-  logo: 
+  logo:
   display_title: true
   display_post_title: true
   # Whether to fix navigation bar
@@ -78,7 +78,7 @@ disable_top_img: false
 default_top_img: https://cdn.jsdelivr.net/gh/fang-tech/Pic/img/202507101117129.jpg
 
 # The banner image of index page
-index_img: 
+index_img:
 
 # The banner image of archive page
 archive_img:
@@ -104,7 +104,7 @@ footer_img: true
 
 # Website Background
 # Can set it to color or image url
-background: 
+background:
 
 cover:
   # Disable the cover or not
