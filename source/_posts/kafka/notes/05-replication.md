@@ -1,5 +1,5 @@
 ---
-title: 03 · Replication / ISR / Leader Election
+title: 05 · Replication / ISR / Leader Election
 type: note
 topic: kafka
 created: 2026-03-22
